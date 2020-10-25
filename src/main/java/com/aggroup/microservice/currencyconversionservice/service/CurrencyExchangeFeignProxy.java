@@ -7,6 +7,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.aggroup.microservice.currencyconversionservice.CurrencyConversionBean;
 
+/**
+ * This interface used to call the external API using feign
+ * @author Mina
+ *
+ */
 @FeignClient(name = "currency-exchange-service")
 @RibbonClient(name = "currency-exchange-service")
 public interface CurrencyExchangeFeignProxy {

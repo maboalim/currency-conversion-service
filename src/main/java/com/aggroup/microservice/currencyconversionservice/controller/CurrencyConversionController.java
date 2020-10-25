@@ -18,7 +18,7 @@ import com.aggroup.microservice.currencyconversionservice.service.CurrencyExchan
 public class CurrencyConversionController {
 
 	@Autowired
-	private CurrencyExchangeFeignProxy proxy;
+	private CurrencyExchangeFeignProxy currencyExchangeFeignProxy;
 	
 	/**
 	 * Use feign to call the other service in microservice project
@@ -30,7 +30,7 @@ public class CurrencyConversionController {
 	@GetMapping("currency-conversion-feign/from/{fromCurrency}/to/{toCurrency}/{amount}")
 	public CurrencyConversionBean retrieveExchangeValue(@PathVariable String fromCurrency, @PathVariable String toCurrency, @PathVariable BigDecimal amount) {
 		
-		CurrencyConversionBean currencyConversionBean = proxy.retrieveExchangeValue(fromCurrency, toCurrency);
+		CurrencyConversionBean currencyConversionBean = currencyExchangeFeignProxy.retrieveExchangeValue(fromCurrency, toCurrency);
 		if (currencyConversionBean.getRate() != null)
 			currencyConversionBean.setAmount(amount);
 		currencyConversionBean.setTotalCalculatedAmount(amount.multiply(currencyConversionBean.getRate()));

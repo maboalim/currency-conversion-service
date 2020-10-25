@@ -19,3 +19,8 @@ Instead of getting the URLs for other microservice from inside the configuration
 
 # Port
 This service use port 8100 as defined in application.properties file
+
+# Environment information
+Java 8
+IDE Eclipse
+maven 3.6.3
