@@ -49,7 +49,7 @@ public class CurrencyConversionController {
 		Map<String, String> uriParameters = new HashMap<>();
 		uriParameters.put("fromCurrency", fromCurrency);
 		uriParameters.put("toCurrency", toCurrency);
-		ResponseEntity<CurrencyConversionBean> responseEntity = new RestTemplate().getForEntity("http://localhost:8080/currency-exchange/from/{fromCurrency}/to/{toCurrency}", CurrencyConversionBean.class, uriParameters);
+		ResponseEntity<CurrencyConversionBean> responseEntity = new RestTemplate().getForEntity("http://localhost:8000/currency-exchange/from/{fromCurrency}/to/{toCurrency}", CurrencyConversionBean.class, uriParameters);
 		if (responseEntity.getBody().getRate() != null)
 			responseEntity.getBody().setAmount(amount);
 			responseEntity.getBody().setTotalCalculatedAmount(amount.multiply(responseEntity.getBody().getRate()));

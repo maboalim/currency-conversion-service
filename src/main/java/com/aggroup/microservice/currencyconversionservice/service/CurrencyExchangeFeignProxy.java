@@ -9,14 +9,21 @@ import com.aggroup.microservice.currencyconversionservice.CurrencyConversionBean
 
 /**
  * This interface used to call the external API using feign
+ * 
  * @author Mina
  *
  */
-@FeignClient(name = "currency-exchange-service")
+//FeignClient = currency-exchange-service used if I need to call directly currency exchange service
+//@FeignClient(name = "currency-exchange-service")
+//FeignClient = zuul-api-gateway-server used if I need call currency exchange service through zuul API gateway
+@FeignClient(name = "zuul-api-gateway-server")
 @RibbonClient(name = "currency-exchange-service")
 public interface CurrencyExchangeFeignProxy {
 
-	@GetMapping("currency-exchange/from/{fromCurrency}/to/{toCurrency}")
+	// Direct microservice call URL
+	// @GetMapping("currency-exchange/from/{fromCurrency}/to/{toCurrency}")
+	// API Gateway URL
+	@GetMapping("currency-exchange-service/currency-exchange/from/{fromCurrency}/to/{toCurrency}")
 	public CurrencyConversionBean retrieveExchangeValue(@PathVariable String fromCurrency,
 			@PathVariable String toCurrency);
 
