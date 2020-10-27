@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,40 +21,51 @@ public class CurrencyConversionController {
 
 	@Autowired
 	private CurrencyExchangeFeignProxy currencyExchangeFeignProxy;
-	
+
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 	/**
 	 * Use feign to call the other service in microservice project
+	 * 
 	 * @param fromCurrency
 	 * @param toCurrency
 	 * @param amount
 	 * @return
 	 */
 	@GetMapping("currency-conversion-feign/from/{fromCurrency}/to/{toCurrency}/{amount}")
-	public CurrencyConversionBean retrieveExchangeValue(@PathVariable String fromCurrency, @PathVariable String toCurrency, @PathVariable BigDecimal amount) {
-		
-		CurrencyConversionBean currencyConversionBean = currencyExchangeFeignProxy.retrieveExchangeValue(fromCurrency, toCurrency);
+	public CurrencyConversionBean retrieveExchangeValue(@PathVariable String fromCurrency,
+			@PathVariable String toCurrency, @PathVariable BigDecimal amount) {
+
+		CurrencyConversionBean currencyConversionBean = currencyExchangeFeignProxy.retrieveExchangeValue(fromCurrency,
+				toCurrency);
 		if (currencyConversionBean.getRate() != null)
 			currencyConversionBean.setAmount(amount);
 		currencyConversionBean.setTotalCalculatedAmount(amount.multiply(currencyConversionBean.getRate()));
+		logger.info("currencyConversionBean -> {}", currencyConversionBean);
 		return currencyConversionBean;
 	}
-	
+
 	/**
-	 * Old way to call web service by using RestTemplate but using feign is better in microservice projects
+	 * Old way to call web service by using RestTemplate but using feign is better
+	 * in microservice projects
+	 * 
 	 * @param fromCurrency
 	 * @param toCurrency
 	 * @param amount
 	 * @return
 	 */
 	@GetMapping("currency-conversion/from/{fromCurrency}/to/{toCurrency}/{amount}")
-	public CurrencyConversionBean retrieveExchangeValueWithOldWay(@PathVariable String fromCurrency, @PathVariable String toCurrency, @PathVariable BigDecimal amount) {
+	public CurrencyConversionBean retrieveExchangeValueWithOldWay(@PathVariable String fromCurrency,
+			@PathVariable String toCurrency, @PathVariable BigDecimal amount) {
 		Map<String, String> uriParameters = new HashMap<>();
 		uriParameters.put("fromCurrency", fromCurrency);
 		uriParameters.put("toCurrency", toCurrency);
-		ResponseEntity<CurrencyConversionBean> responseEntity = new RestTemplate().getForEntity("http://localhost:8000/currency-exchange/from/{fromCurrency}/to/{toCurrency}", CurrencyConversionBean.class, uriParameters);
+		ResponseEntity<CurrencyConversionBean> responseEntity = new RestTemplate().getForEntity(
+				"http://localhost:8000/currency-exchange/from/{fromCurrency}/to/{toCurrency}",
+				CurrencyConversionBean.class, uriParameters);
 		if (responseEntity.getBody().getRate() != null)
 			responseEntity.getBody().setAmount(amount);
-			responseEntity.getBody().setTotalCalculatedAmount(amount.multiply(responseEntity.getBody().getRate()));
+		responseEntity.getBody().setTotalCalculatedAmount(amount.multiply(responseEntity.getBody().getRate()));
 		return responseEntity.getBody();
 	}
 }

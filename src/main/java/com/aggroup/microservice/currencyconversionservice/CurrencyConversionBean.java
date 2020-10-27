@@ -69,4 +69,10 @@ public class CurrencyConversionBean {
 		this.totalCalculatedAmount = totalCalculatedAmount;
 	}
 
+	@Override
+	public String toString() {
+		return "CurrencyConversionBean [fromCurrency=" + fromCurrency + ", toCurrency=" + toCurrency + ", amount="
+				+ amount + ", rate=" + rate + ", totalCalculatedAmount=" + totalCalculatedAmount + "]";
+	}
+
 }
