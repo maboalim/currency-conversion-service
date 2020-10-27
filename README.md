@@ -11,7 +11,7 @@ For calling more than one instance from the other microservice, I am using Ribbo
 Instead of getting the URLs for other microservice from inside the configuration file application.properties, we get it using naming server 
 
 Instead of calling the other microservices direct, this project use zuul api gateway to handle the communication between microservice
-This service register  the requests tracing by zipkins and rabbitMQ
+This service register  the requests tracing by zipkin and rabbitMQ
 
 # Used inside this project
 
