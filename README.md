@@ -91,7 +91,7 @@ Starting orders for those services:
 - currency-conversion-service
 
 Tested inside those projects:
-- JPA
+- Spring Data JPA
 - Spring cloud configuration server read from git repository
 - Rest template
 - Feign rest client 
